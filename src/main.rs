@@ -1,6 +1,7 @@
 use cudarc;
 use cudarc::driver::LaunchAsync;
 use cudarc::driver::LaunchConfig;
+use std::include_str;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let dev = cudarc::driver::CudaDevice::new(0)?;
@@ -9,15 +10,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let inp = dev.htod_copy(vec![1.0f32; 100])?;
     let mut out = dev.alloc_zeros::<f32>(100)?;
 
-    let ptx = cudarc::nvrtc::compile_ptx(
-        "
-extern \"C\" __global__ void sin_kernel(float *out, const float *inp, const size_t numel) {
-    unsigned int i = blockIdx.x * blockDim.x + threadIdx.x;
-    if (i < numel) {
-        out[i] = sin(inp[i]);
-    }
-}",
-    )?;
+    let ptx = cudarc::nvrtc::compile_ptx(include_str!("kernels/sin.cc"))?;
 
     // and dynamically load it into the device
     dev.load_ptx(ptx, "my_module", &["sin_kernel"])?;
