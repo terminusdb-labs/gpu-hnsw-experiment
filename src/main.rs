@@ -1,4 +1,5 @@
 use cudarc;
+use cudarc::driver::LaunchAsync;
 use cudarc::driver::LaunchConfig;
 
 fn main() -> Result<(), std::io::Error> {
@@ -27,4 +28,5 @@ extern \"C\" __global__ void sin_kernel(float *out, const float *inp, const size
 
     let out_host: Vec<f32> = dev.dtoh_sync_copy(&out)?;
     assert_eq!(out_host, [1.0; 100].map(f32::sin));
+    Ok(())
 }
