@@ -2,7 +2,7 @@ use cudarc;
 use cudarc::driver::LaunchAsync;
 use cudarc::driver::LaunchConfig;
 
-fn main() -> Result<(), std::io::Error> {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let dev = cudarc::driver::CudaDevice::new(0)?;
 
     // allocate buffers
