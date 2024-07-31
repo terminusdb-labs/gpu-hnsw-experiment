@@ -1,6 +1,7 @@
 use cudarc;
+use cudarc::driver::LaunchConfig;
 
-fn main() {
+fn main() -> Result<(), std::io::Error> {
     let dev = cudarc::driver::CudaDevice::new(0)?;
 
     // allocate buffers
