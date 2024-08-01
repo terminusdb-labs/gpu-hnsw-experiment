@@ -10,7 +10,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let inp = dev.htod_copy(vec![1.0f32; 100])?;
     let mut out = dev.alloc_zeros::<f32>(100)?;
 
-    let ptx = cudarc::nvrtc::compile_ptx(include_str!("kernels/sin.cc"))?;
+    let ptx = cudarc::nvrtc::compile_ptx(include_str!("kernels/sin.cu"))?;
 
     // and dynamically load it into the device
     dev.load_ptx(ptx, "my_module", &["sin_kernel"])?;

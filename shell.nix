@@ -7,7 +7,7 @@
 }:
 pkgs.mkShell {
   buildInputs = with pkgs; [
-    clang
+    clang_15
     cudatoolkit
     cargo
     rustc
