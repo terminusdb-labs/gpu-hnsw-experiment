@@ -1,16 +1,11 @@
-extern crate cc;
-
 fn main() {
-    //panic!("{:?}", std::env::current_dir().unwrap());
-    cc::Build::new()
-        .cuda(true)
-        .flag("--cubin")
-        .flag("-cudart=shared")
-        .file("src/kernels/sin.cu")
-        .ccbin(false)
-        .flag("-ccbin=clang++")
-        .compile("libsin.cubin");
+    println!("cargo:rerun-if-changed=build.rs");
+    println!("cargo:rerun-if-changed=src/compatibility.cuh");
+    println!("cargo:rerun-if-changed=src/cuda_utils.cuh");
+    println!("cargo:rerun-if-changed=src/binary_op_macros.cuh");
 
-    /* Link CUDA Runtime (libcudart.so) */
-    println!("cargo:rustc-link-lib=cudart");
+    let builder = bindgen_cuda::Builder::default();
+    println!("cargo:info={builder:?}");
+    let bindings = builder.build_ptx().unwrap();
+    bindings.write("src/lib.rs").unwrap();
 }
