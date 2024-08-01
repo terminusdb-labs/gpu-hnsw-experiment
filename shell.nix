@@ -13,8 +13,10 @@ pkgs.mkShell {
     rustc
   ];
   shellHook = ''
-      LD_LIBRARY_PATH=${pkgs.linuxPackages.nvidia_x11}/lib:${pkgs.cudatoolkit}/lib
-      #export CUDA_PATH=${pkgs.cudatoolkit}
+LD_LIBRARY_PATH=${pkgs.cudatoolkit}/lib:$LD_LIBRARY_PATH
+if [ -e "/etc/NIXOS" ];then
+  LD_LIBRARY_PATH=${pkgs.linuxPackages.nvidia_x11}/lib:${pkgs.cudatoolkit}/lib:$LD_LIBRARY_PATH
+fi
    '';
 
 }
