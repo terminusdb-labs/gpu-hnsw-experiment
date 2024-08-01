@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 cudarc = { version = "0.11.8", features = ["cuda-version-from-build-system"]}
+hnsw-kernels = { version = "0.1.0", path = "../hnsw-kernels" }
 
 [build-dependencies]
 bindgen_cuda = "0.1.5"

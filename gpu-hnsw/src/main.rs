@@ -1,8 +1,7 @@
-use cudarc;
 use cudarc::driver::LaunchAsync;
 use cudarc::driver::LaunchConfig;
-use std::include_str;
-use crate::lib;
+use cudarc::nvrtc::Ptx;
+use hnsw_kernels::SIN;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let dev = cudarc::driver::CudaDevice::new(0)?;
@@ -12,7 +11,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut out = dev.alloc_zeros::<f32>(100)?;
 
     // and dynamically load it into the device
-    dev.load_ptx(ptx, "my_module", &["sin_kernel"])?;
+    dev.load_ptx(Ptx::from_src(SIN), "my_module", &["sin_kernel"])?;
 
     let sin_kernel = dev.get_func("my_module", "sin_kernel").unwrap();
     let cfg = LaunchConfig::for_num_elems(100);
