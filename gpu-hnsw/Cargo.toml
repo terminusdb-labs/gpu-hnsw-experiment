@@ -1,0 +1,10 @@
+[package]
+name = "gpu-hnsw"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+cudarc = { version = "0.11.8", features = ["cuda-version-from-build-system"]}
+
+[build-dependencies]
+bindgen_cuda = "0.1.5"
